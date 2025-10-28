@@ -1396,6 +1396,7 @@ class SemanticsData with Diagnosticable {
         other.role == role &&
         other.validationResult == validationResult &&
         other.inputType == inputType &&
+        other.hitTestBehavior == hitTestBehavior &&
         _sortedListsEqual(other.customSemanticsActionIds, customSemanticsActionIds) &&
         setEquals<String>(controlsNodes, other.controlsNodes);
   }
@@ -1432,6 +1433,9 @@ class SemanticsData with Diagnosticable {
       validationResult,
       controlsNodes == null ? null : Object.hashAll(controlsNodes!),
       inputType,
+      traversalParentIdentifier,
+      traversalChildIdentifier,
+      hitTestBehavior,
     ),
   );
 
@@ -3605,6 +3609,9 @@ class SemanticsNode with DiagnosticableTreeMixin {
         }
         if (inputType == SemanticsInputType.none) {
           inputType = node._inputType;
+        }
+        if (node._hitTestBehavior != ui.SemanticsHitTestBehavior.defer) {
+          hitTestBehavior = node._hitTestBehavior;
         }
         if (tooltip == '') {
           tooltip = node._tooltip;
@@ -6238,6 +6245,11 @@ class SemanticsConfiguration {
     _accessiblityFocusBlockType = _accessiblityFocusBlockType._merge(
       child._accessiblityFocusBlockType,
     );
+
+    if (_hitTestBehavior == ui.SemanticsHitTestBehavior.defer && 
+        child._hitTestBehavior != ui.SemanticsHitTestBehavior.defer) {
+      _hitTestBehavior = child._hitTestBehavior;
+    }
 
     _hasBeenAnnotated = hasBeenAnnotated || child.hasBeenAnnotated;
   }
