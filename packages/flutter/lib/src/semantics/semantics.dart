@@ -1433,8 +1433,6 @@ class SemanticsData with Diagnosticable {
       validationResult,
       controlsNodes == null ? null : Object.hashAll(controlsNodes!),
       inputType,
-      traversalParentIdentifier,
-      traversalChildIdentifier,
       hitTestBehavior,
     ),
   );
